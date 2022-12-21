@@ -27,32 +27,35 @@ namespace notion
         {
             InitializeComponent();
             JsonDataRead();
-            richTextBox1.Enabled = false;
-            textBox1.Enabled = false;
+            richTextBox1.Text = Notions[0].notion;
+            textBox1.Text = Notions[0].notionName;
+            comboBox1.SelectedIndex = 0;
         }
 
         private void JsonDataWrite()
         {
-            if (!Directory.Exists(@"C:\\Users\\Asus\\source\\repos\\Notion\\Notion\\Json\\"))
+            string currentDirectory = Directory.GetCurrentDirectory();
+            if (!Directory.Exists(currentDirectory + "\\Json\\"))
             {
-                Directory.CreateDirectory(@"C:\\Users\\Asus\\source\\repos\\Notion\\Notion\\Json\\");
-                StreamWriter fc = File.CreateText(@"C:\\Users\\Asus\\source\\repos\\Notion\\Notion\\Json\\Notions.json");
+                Directory.CreateDirectory(currentDirectory + "\\Json\\");
+                StreamWriter fc = File.CreateText(currentDirectory + "\\Json\\Notions.json");
                 fc.Close();
             }
             else
             {
-                File.Delete(@"C:\\Users\\Asus\\source\\repos\\Notion\\Notion\\Json\\Notions.json");
-                StreamWriter fc = File.CreateText(@"C:\\Users\\Asus\\source\\repos\\Notion\\Notion\\Json\\Notions.json");
+                File.Delete(currentDirectory + "\\Json\\Notions.json");
+                StreamWriter fc = File.CreateText(currentDirectory + "\\Json\\Notions.json");
                 fc.Close();
             }
             string JsonNotions = JsonConvert.SerializeObject(Notions);
-            File.WriteAllText(@"C:\Users\Asus\source\repos\Notion\notion\Json\Notions.json", JsonNotions);
+            File.WriteAllText(currentDirectory + "\\Json\\Notions.json", JsonNotions);
         }
         private void JsonDataRead()
         {
-            if (Directory.Exists(@"C:\\Users\\Asus\\source\\repos\\Notion\\Notion\\Json\\"))
+            string currentDirectory = Directory.GetCurrentDirectory();
+            if (Directory.Exists(currentDirectory + "\\Json\\"))
             {
-                string JsonNotions = File.ReadAllText(@"C:\\Users\\Asus\\source\\repos\\Notion\\Notion\\Json\\Notions.json");
+                string JsonNotions = File.ReadAllText(currentDirectory + "\\Json\\Notions.json");
                 List<Notion> Data = JsonConvert.DeserializeObject<List<Notion>>(JsonNotions);
 
                 for (int i = 0; i < Data.Count; i++)
@@ -137,6 +140,11 @@ namespace notion
             {
                 richTextBox1.Enabled = true;
                 textBox1.Enabled = true;
+            }
+            else
+            {
+                richTextBox1.Enabled = false;
+                textBox1.Enabled = false;
             }
             richTextBox1.Text = Notions[_notionPageCount].notion.ToString();
             textBox1.Text = Notions[_notionPageCount].notionName.ToString();
